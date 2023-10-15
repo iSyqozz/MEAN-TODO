@@ -1,0 +1,95 @@
+<div class=" max-w-6xl mx-auto px-2">
+  <h1 class=" font-semibold mt-16  w-full text-center text-white text-2xl md:text-6xl lg:text-text-8xl">
+    TODO APP
+  </h1>
+  <h2 class=" font-semibold mt-4 text-lg md:text-2xl text-opacity-50 text-white w-full text-center ">
+    Built with MEAN stack
+  </h2>
+
+  <div class="w-[65%] rounded-3xl h-[2px] bg-white bg-opacity-40 mx-auto mt-6"></div>
+
+  <div class="w-full mx-auto text-center text-white text-opacity-80 mt-12">TODO Items: {{TODOS.length}}</div>
+
+  <div class="mt-2 mx-auto flex max-sm:flex-col max-sm:gap-4 items-center justify-evenly sm:w-[45%] w-[250px]">
+    <div class=" text-opacity-80 text-center text-green-300">Low: {{getPriorityCount("low")}}</div>
+    <div class=" text-opacity-80 text-center text-yellow-200">Medium: {{getPriorityCount("medium")}}</div>
+    <div class=" text-opacity-80 text-center text-red-300">High: {{getPriorityCount("high")}}</div>
+  </div>
+
+
+  <!-- Input, button, and dropdown for adding a TODO -->
+  <div
+    class="sm:w-[45%] w-[250px] max-sm:flex max-sm:flex-col max-sm:items-center justify-center max-sm:gap-4 mx-auto grid [grid-template-columns:_4fr_2fr_2fr] mt-4">
+    <input type="name" class=" text-black w border border-white px-2 py-1 rounded-md placeholder-gray-400"
+      [(ngModel)]="newTodoInput" placeholder="NEW TODO.." />
+
+    <div class="relative mx-2">
+      <select [(ngModel)]="choosenPriority"
+        class="bg-gray-700 px-1 cursor-pointer text-center block appearance-none bg-transparent py-1 [border:2px_solid_white] transition-all duration-200 hover:scale-105 text-white rounded-md ">
+        <option class="bg-gray-700 text-white low">low</option>
+        <option class="bg-gray-700 text-white medium">medium</option>
+        <option class="bg-gray-700 text-white high">high</option>
+      </select>
+    </div>
+
+    <button (click)="addTODO(newTodoInput, choosenPriority )"
+      class="text-center px-2 bg-transparent py-1 [border:2px_solid_white] transition-all duration-200 hover:scale-105 text-white rounded-md ">
+      Add Todo
+    </button>
+  </div>
+
+
+  <div class=" overflow-auto
+  sm:w-[45%] w-[250px] [border:2px_solid_white]
+  shadow-gray-400 shadow-lg
+  h-[500px] rounded-xl mt-4 mx-auto">
+
+    <div *ngFor="let todo of TODOS"
+      class="items-center justify-between flex text-white w-ful p-8 [border:2px_solid_white]">
+
+
+      <div *ngIf="todo.isEditing; else todoDiv">
+        <div class="justify-start items-center gap-1 flex">
+          <input type="name" class=" w-[45%] text-black w border border-white px-2 py-1 rounded-md placeholder-gray-400"
+            [(ngModel)]="todo.content" />
+          <svg
+            (click)="updateTODO(todo, todo.content, todo.priority, todo.id)"
+          
+            class="transition-all hover:scale-105 cursor-pointer" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.293 11.293l1.414-1.414 5 5 1.414 1.414 7-7-1.414-1.414-5 5-6-6-1.414 1.414z" fill="#22C55E" />
+          </svg>
+        </div>
+
+      </div>
+      <ng-template #todoDiv>
+        <div class="w-[45%] truncate">
+          {{ todo.content }}
+        </div>
+      </ng-template>
+      <div>{{ todo.priority }}</div>
+      <div class="flex items-center gap-2 justify-center">
+
+        <div (click)="deleteTODO(todo.content, todo.priority, todo.id)"
+          class="hover:scale-105 translate-x-0 cursor-pointer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="red" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.54 14.34l-1.88 1.88L12 13.88l-2.66 2.54-1.88-1.88L10.12 12l-2.54-2.66 1.88-1.88L12 10.12l2.66-2.54 1.88 1.88L13.88 12l2.66 2.66z" />
+          </svg>
+        </div>
+
+        <div (click)="setEditing(todo)" class=" hover:scale-105 translate-x-0 cursor-pointer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm18.71-6.47a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+          </svg>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
